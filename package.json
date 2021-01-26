@@ -26,6 +26,7 @@
   "homepage": "https://github.com/AkshayGuptaK/fuber#readme",
   "devDependencies": {
     "@types/jest": "^26.0.15",
+    "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",
     "auto-bind": "^4.0.0",
