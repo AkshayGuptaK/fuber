@@ -7,6 +7,25 @@ describe('Trip Log', () => {
     expect(tl.complete(1)).toBeNull();
   });
 
+  it('should return null when trying to complete trip which is already completed', () => {
+    const tl = new TripLog();
+    const origination = {
+      latitude: 12.972442,
+      longitude: 77.580643,
+    };
+    const originalDestination = {
+      latitude: 37.871666,
+      longitude: -122.272781,
+    };
+    const originalTaxi = {
+      type: carTypes[1],
+      licensePlate: 'LUV2XLR8',
+    };
+    tl.add(origination, originalDestination, originalTaxi);
+    tl.complete(1);
+    expect(tl.complete(1)).toBeNull();
+  });
+
   it('should return destination and taxi originally specified when trip completed', () => {
     const tl = new TripLog();
     const origination = {

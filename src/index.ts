@@ -7,7 +7,7 @@ const server = fastify({
   logger: true,
 });
 
-const fleet = new Fleet(10000);
+const fleet = new Fleet(100000);
 const trips = new TripLog();
 
 interface TripBody {

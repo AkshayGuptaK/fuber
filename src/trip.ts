@@ -29,6 +29,7 @@ export default class TripLog {
   complete(tripId: number) {
     const trip = this.trips[tripId - 1];
     if (!trip) return null;
+    if (trip.timeCompleted) return null;
     trip.timeCompleted = Date.now();
     const tripTime = trip.timeCompleted - trip.timeBegun;
     const tripDistance = Math.sqrt(
