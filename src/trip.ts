@@ -37,7 +37,7 @@ export default class TripLog {
         (trip.destination.longitude - trip.origination.longitude) ** 2
     );
     const charge = Math.floor(
-      tripTime * chargePerMs + tripDistance * chargePerDegree
+      tripTime * chargePerMs + tripDistance * chargePerDegree // need to charge on car type basis
     );
     return { charge, destination: trip.destination, taxi: trip.taxi };
   }

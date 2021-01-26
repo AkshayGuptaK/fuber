@@ -28,7 +28,7 @@ export default class SortedArray<T> {
       this.getDistanceFrom(b.coordinates, targetX, targetY);
     return this.items
       .filter(({ item }) => filterFn(item))
-      .sort(sortFn)
+      .sort(sortFn) // could do a reduce and hence a transduce
       .shift();
   }
 
