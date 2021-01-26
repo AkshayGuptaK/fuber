@@ -1,4 +1,5 @@
 import autoBind from 'auto-bind';
+import { Coordinate } from './types';
 
 const directions = ['NW', 'SW', 'NE', 'SE'] as const;
 type Direction = typeof directions[number];
@@ -12,8 +13,8 @@ export default class QuadTree<T> {
   private root: Node<T>;
 
   constructor() {
-    this.root = null;
     autoBind(this);
+    this.root = null;
   }
 
   add(itemX: number, itemY: number, item: T): void {
@@ -43,13 +44,14 @@ export default class QuadTree<T> {
     targetX: number,
     targetY: number,
     filter: (item: T) => boolean
-  ): T {
+  ): { coordinates: Coordinate; item: T } {
     let best: Best<T> = { distance: Number.POSITIVE_INFINITY, node: null };
     best = this.findNearestInSubtree(targetX, targetY, filter, best, this.root);
     if (best.node == null) return null;
     const item = best.node.getItem();
+    const coordinates = best.node.getCoordinates();
     this.removeNode(best.node);
-    return item;
+    return { coordinates, item };
   }
 
   private removeNode(node: Node<T>): void {
@@ -134,8 +136,8 @@ class Node<T> {
     private bound: Bound,
     private item: T
   ) {
-    this.NW = this.SW = this.NE = this.SE = null;
     autoBind(this);
+    this.NW = this.SW = this.NE = this.SE = null;
   }
 
   distanceTo(x: number, y: number): number {
@@ -160,6 +162,10 @@ class Node<T> {
 
   getItem(): T {
     return this.item;
+  }
+
+  getCoordinates() {
+    return { x: this.x, y: this.y };
   }
 
   removeItem(): void {
