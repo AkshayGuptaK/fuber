@@ -22,17 +22,23 @@ export default class SortedArray<T> {
     targetX: number,
     targetY: number,
     filterFn: (item: T) => boolean
-  ): { coordinates: Coordinate; item: T } {
-    const sortFn = (a, b) =>
-      this.getDistanceFrom(a.coordinates, targetX, targetY) -
-      this.getDistanceFrom(b.coordinates, targetX, targetY);
-    return this.items
-      .filter(({ item }) => filterFn(item))
-      .sort(sortFn) // could do a reduce and hence a transduce
-      .shift();
+  ): { coordinates: Coordinate; item: T } | null {
+    const sortFn = (a: Coordinate, b: Coordinate) =>
+      this.getDistanceFrom(a, targetX, targetY) -
+      this.getDistanceFrom(b, targetX, targetY);
+    return (
+      this.items
+        .filter(({ item }) => filterFn(item))
+        .sort(({ coordinates: a }, { coordinates: b }) => sortFn(a, b)) // could do a reduce and hence a transduce
+        .shift() || null
+    );
   }
 
-  private getDistanceFrom(location, targetX, targetY) {
+  private getDistanceFrom(
+    location: Coordinate,
+    targetX: number,
+    targetY: number
+  ) {
     return Math.sqrt((location.x - targetX) ** 2 + (location.y - targetY));
   }
 }

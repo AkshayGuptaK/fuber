@@ -6,11 +6,11 @@ type Direction = typeof directions[number];
 
 interface Best<T> {
   distance: number;
-  node: Node<T>;
+  node: Node<T> | null;
 }
 
 export default class QuadTree<T> {
-  private root: Node<T>;
+  private root: Node<T> | null;
 
   constructor() {
     autoBind(this);
@@ -26,7 +26,7 @@ export default class QuadTree<T> {
     itemY: number,
     item: T,
     bound: Bound,
-    node: Node<T>
+    node: Node<T> | null
   ): Node<T> {
     if (node == null) return new Node(itemX, itemY, bound, item);
     const direction = node.directionTo(itemX, itemY);
@@ -43,8 +43,8 @@ export default class QuadTree<T> {
   removeNearest(
     targetX: number,
     targetY: number,
-    filter: (item: T) => boolean
-  ): { coordinates: Coordinate; item: T } {
+    filter: (item: T | null) => boolean
+  ): { coordinates: Coordinate; item: T | null } | null {
     let best: Best<T> = { distance: Number.POSITIVE_INFINITY, node: null };
     best = this.findNearestInSubtree(targetX, targetY, filter, best, this.root);
     if (best.node == null) return null;
@@ -59,11 +59,11 @@ export default class QuadTree<T> {
   }
 
   private findNearestInSubtree(
-    targetX,
-    targetY,
-    filter,
+    targetX: number,
+    targetY: number,
+    filter: (item: T | null) => boolean,
     best: Best<T>,
-    node: Node<T>
+    node: Node<T> | null
   ): Best<T> {
     if (node == null) return best;
     const direction = node.directionTo(targetX, targetY);
@@ -82,12 +82,12 @@ export default class QuadTree<T> {
   }
 
   private findNearestInRestOfTree(
-    targetX,
-    targetY,
-    filter,
-    best,
+    targetX: number,
+    targetY: number,
+    filter: (item: T | null) => boolean,
+    best: Best<T>,
     node: Node<T>,
-    goodDirection
+    goodDirection: Direction
   ) {
     const otherDirections = directions.filter((d) => d !== goodDirection);
     for (const direction of otherDirections) {
@@ -108,9 +108,9 @@ export default class QuadTree<T> {
   }
 
   private updateBestForNode(
-    targetX,
-    targetY,
-    filter,
+    targetX: number,
+    targetY: number,
+    filter: (item: T | null) => boolean,
     best: Best<T>,
     node: Node<T>
   ): Best<T> {
@@ -125,16 +125,16 @@ export default class QuadTree<T> {
 }
 
 class Node<T> {
-  public NW: Node<T>;
-  public SW: Node<T>;
-  public NE: Node<T>;
-  public SE: Node<T>;
+  public NW: Node<T> | null;
+  public SW: Node<T> | null;
+  public NE: Node<T> | null;
+  public SE: Node<T> | null;
 
   constructor(
     private x: number,
     private y: number,
     private bound: Bound,
-    private item: T
+    private item: T | null
   ) {
     autoBind(this);
     this.NW = this.SW = this.NE = this.SE = null;
@@ -147,20 +147,28 @@ class Node<T> {
   }
 
   directionTo(x: number, y: number): Direction {
-    if (x >= this.x && y >= this.y) return 'NW';
-    if (x >= this.x && y < this.y) return 'SE';
-    if (x < this.x && y >= this.y) return 'NW';
-    if (x < this.x && y < this.y) return 'SW';
+    if (x < this.x) {
+      if (y < this.y) return 'SW';
+      return 'NW';
+    }
+    if (y < this.y) return 'SE';
+    return 'NE';
   }
 
   limitBoundBy(dir: Direction): Bound {
-    if (dir == 'NE') return this.bound.updateLimit(this.x, null, this.y, null);
-    if (dir == 'NW') return this.bound.updateLimit(null, this.x, this.y, null);
-    if (dir == 'SE') return this.bound.updateLimit(this.x, null, null, this.y);
-    if (dir == 'SW') return this.bound.updateLimit(null, this.x, null, this.y);
+    switch (dir) {
+      case 'NE':
+        return this.bound.updateLimit(this.x, null, this.y, null);
+      case 'NW':
+        return this.bound.updateLimit(null, this.x, this.y, null);
+      case 'SE':
+        return this.bound.updateLimit(this.x, null, null, this.y);
+      case 'SW':
+        return this.bound.updateLimit(null, this.x, null, this.y);
+    }
   }
 
-  getItem(): T {
+  getItem(): T | null {
     return this.item;
   }
 

@@ -8,7 +8,10 @@ export interface GeoCoordinate {
   longitude: number;
 }
 
-export type Preferences = Record<string, string | number | boolean>;
+export type Preferences<T extends string = string> = Record<
+  T,
+  string | number | boolean
+>;
 
 export const carTypes = ['auto', 'sedan', 'limo'] as const;
 
@@ -21,6 +24,6 @@ export interface Trip {
   origination: GeoCoordinate;
   destination: GeoCoordinate;
   timeBegun: number;
-  timeCompleted: number;
+  timeCompleted: number | null;
   taxi: Car;
 }

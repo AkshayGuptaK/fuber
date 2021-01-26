@@ -26,7 +26,9 @@ export default class TripLog {
     return this.trips.length;
   }
 
-  complete(tripId: number) {
+  complete(
+    tripId: number
+  ): { charge: number; destination: GeoCoordinate; taxi: Car } | null {
     const trip = this.trips[tripId - 1];
     if (!trip) return null;
     if (trip.timeCompleted) return null;

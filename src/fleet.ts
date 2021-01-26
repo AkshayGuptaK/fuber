@@ -13,13 +13,13 @@ export default class Fleet {
 
   findNearestTaxi(
     location: GeoCoordinate,
-    preferences: Preferences
-  ): { taxiLocation: GeoCoordinate; taxi: Car } {
+    preferences: Preferences<keyof Car>
+  ): { taxiLocation: GeoCoordinate; taxi: Car | null } | null {
     const { latitude, longitude } = location;
-    const filterFn = (car: Car): boolean => {
+    const filterFn = (car: Car | null): boolean => {
       if (car == null) return false;
       for (const [key, value] of Object.entries(preferences)) {
-        if (car[key] !== value) return false;
+        if (car[key as keyof Car] !== value) return false;
       }
       return true;
     };
