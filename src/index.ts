@@ -20,6 +20,7 @@ server.get('/', (request, reply) => {
   reply.send('Book with us today!');
 });
 
+// add validation middleware
 server.post('/api/v1/trip', (request, reply) => {
   const { location, destination, preferences } = request.body as TripBody;
   const result = fleet.findNearestTaxi(location, preferences);

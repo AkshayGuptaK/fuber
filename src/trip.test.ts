@@ -41,7 +41,7 @@ describe('Trip Log', () => {
       licensePlate: 'LUV2XLR8',
     };
     tl.add(origination, originalDestination, originalTaxi);
-    const { destination, taxi } = tl.complete(1);
+    const { destination, taxi } = tl.complete(1)!;
     expect(destination).toEqual(originalDestination);
     expect(taxi).toEqual(originalTaxi);
   });
@@ -61,7 +61,7 @@ describe('Trip Log', () => {
       licensePlate: 'LUV2XLR8',
     };
     tl.add(origination, originalDestination, originalTaxi);
-    const { charge } = tl.complete(1);
+    const { charge } = tl.complete(1)!;
     expect(charge).toBeGreaterThan(200000);
   });
 });

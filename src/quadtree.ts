@@ -56,6 +56,7 @@ export default class QuadTree<T> {
 
   private removeNode(node: Node<T>): void {
     node.removeItem();
+    // check if leaf, if so remove node, recurse up the tree checking parents for the same
   }
 
   private findNearestInSubtree(
@@ -138,6 +139,10 @@ class Node<T> {
   ) {
     autoBind(this);
     this.NW = this.SW = this.NE = this.SE = null;
+  }
+
+  isLeaf(): boolean {
+    return (this.NW || this.SW || this.NE || this.SE) == null;
   }
 
   distanceTo(x: number, y: number): number {
