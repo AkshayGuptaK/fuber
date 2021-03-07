@@ -1,7 +1,4 @@
-export interface Coordinate {
-  x: number;
-  y: number;
-}
+export type Coordinate = [number, number];
 
 export interface GeoCoordinate {
   latitude: number;
@@ -21,8 +18,8 @@ export interface Car {
 }
 
 export interface Trip {
-  origination: GeoCoordinate;
-  destination: GeoCoordinate;
+  origination: Coordinate;
+  destination: Coordinate;
   timeBegun: number;
   timeCompleted: number | null;
   taxi: Car;

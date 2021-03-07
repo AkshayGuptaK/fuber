@@ -1,5 +1,6 @@
 import autoBind from 'auto-bind';
 import { Coordinate } from './types';
+import { distanceBetween } from './utils';
 
 const directions = ['NW', 'SW', 'NE', 'SE'] as const;
 type Direction = typeof directions[number];
@@ -146,9 +147,7 @@ class Node<T> {
   }
 
   distanceTo(x: number, y: number): number {
-    const xDistance = Math.abs(x - this.x);
-    const yDistance = Math.abs(y - this.y);
-    return Math.sqrt(xDistance ** 2 + yDistance ** 2);
+    return distanceBetween([x, y], [this.x, this.y]);
   }
 
   directionTo(x: number, y: number): Direction {
@@ -177,8 +176,8 @@ class Node<T> {
     return this.item;
   }
 
-  getCoordinates() {
-    return { x: this.x, y: this.y };
+  getCoordinates(): Coordinate {
+    return [this.x, this.y];
   }
 
   removeItem(): void {
@@ -219,8 +218,6 @@ class Bound {
   closestPossibleDistance(targetX: number, targetY: number): number {
     const closestX = Math.min(Math.max(this.xMin, targetX), this.xMax);
     const closestY = Math.min(Math.max(this.yMin, targetY), this.xMax);
-    const xDistance = Math.abs(closestX - targetX);
-    const yDistance = Math.abs(closestY - targetY);
-    return Math.sqrt(xDistance ** 2 + yDistance ** 2);
+    return distanceBetween([closestX, closestY], [targetX, targetY]);
   }
 }

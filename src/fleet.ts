@@ -1,6 +1,6 @@
 import autoBind from 'auto-bind';
 import QuadTree from './quadtree';
-import { GeoCoordinate, Preferences, Car, carTypes } from './types';
+import { GeoCoordinate, Preferences, Car, carTypes, Coordinate } from './types';
 
 export default class Fleet {
   cars: QuadTree<Car>;
@@ -28,16 +28,15 @@ export default class Fleet {
     const { coordinates, item } = result;
     return {
       taxiLocation: {
-        latitude: coordinates.x,
-        longitude: coordinates.y,
+        latitude: coordinates[0],
+        longitude: coordinates[1],
       },
       taxi: item,
     };
   }
 
-  add(location: GeoCoordinate, taxi: Car): void {
-    const { latitude, longitude } = location;
-    this.cars.add(latitude, longitude, taxi);
+  add(location: Coordinate, taxi: Car): void {
+    this.cars.add(location[0], location[1], taxi);
   }
 
   private loadInitialCars(numberOfCars: number) {

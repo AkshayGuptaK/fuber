@@ -27,7 +27,13 @@ server.post('/api/v1/trip', (request, reply) => {
   if (result == null) reply.send('Sorry no cab available right now');
   else {
     const { taxiLocation, taxi } = result;
-    const tripId = taxi && trips.add(location, destination, taxi);
+    const tripId =
+      taxi &&
+      trips.add(
+        [location.latitude, location.longitude],
+        [destination.latitude, destination.longitude],
+        taxi
+      );
     reply.send({
       tripId,
       licensePlate: taxi && taxi.licensePlate,

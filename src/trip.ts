@@ -1,5 +1,6 @@
 import autoBind from 'auto-bind';
-import { Car, GeoCoordinate, Trip } from './types';
+import { Car, Coordinate, Trip } from './types';
+import { distanceBetween } from './utils';
 
 const chargePerDegree = 1000;
 const chargePerMs = 1;
@@ -11,11 +12,7 @@ export default class TripLog {
     autoBind(this);
   }
 
-  add(
-    origination: GeoCoordinate,
-    destination: GeoCoordinate,
-    taxi: Car
-  ): number {
+  add(origination: Coordinate, destination: Coordinate, taxi: Car): number {
     this.trips.push({
       origination,
       destination,
@@ -28,16 +25,13 @@ export default class TripLog {
 
   complete(
     tripId: number
-  ): { charge: number; destination: GeoCoordinate; taxi: Car } | null {
+  ): { charge: number; destination: Coordinate; taxi: Car } | null {
     const trip = this.trips[tripId - 1];
     if (!trip) return null;
     if (trip.timeCompleted) return null;
     trip.timeCompleted = Date.now();
     const tripTime = trip.timeCompleted - trip.timeBegun;
-    const tripDistance = Math.sqrt(
-      (trip.destination.latitude - trip.origination.latitude) ** 2 +
-        (trip.destination.longitude - trip.origination.longitude) ** 2
-    );
+    const tripDistance = distanceBetween(trip.origination, trip.destination);
     const charge = Math.floor(
       tripTime * chargePerMs + tripDistance * chargePerDegree // need to charge on car type basis
     );

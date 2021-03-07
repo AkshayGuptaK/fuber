@@ -1,5 +1,6 @@
 import autoBind from 'auto-bind';
 import { Coordinate } from './types';
+import { distanceBetween } from './utils';
 
 export default class SortedArray<T> {
   private items: Array<{ coordinates: Coordinate; item: T }> = [];
@@ -10,10 +11,7 @@ export default class SortedArray<T> {
 
   add(itemX: number, itemY: number, item: T): void {
     this.items.push({
-      coordinates: {
-        x: itemX,
-        y: itemY,
-      },
+      coordinates: [itemX, itemY],
       item,
     });
   }
@@ -39,6 +37,6 @@ export default class SortedArray<T> {
     targetX: number,
     targetY: number
   ) {
-    return Math.sqrt((location.x - targetX) ** 2 + (location.y - targetY));
+    return distanceBetween(location, [targetX, targetY]);
   }
 }

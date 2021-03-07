@@ -24,10 +24,7 @@ describe('Quad Tree', () => {
     const qt = new QuadTree<string>();
     qt.add(0, 0, 'item');
     const expectedReturn = {
-      coordinates: {
-        x: 0,
-        y: 0,
-      },
+      coordinates: [0, 0],
       item: 'item',
     };
     expect(qt.removeNearest(0, 0, basicFilter)).toEqual(expectedReturn);
@@ -43,10 +40,7 @@ describe('Quad Tree', () => {
     qt.add(-2, 4, null);
 
     const expectedReturn = {
-      coordinates: {
-        x: -2,
-        y: 4,
-      },
+      coordinates: [-2, 4],
       item: null,
     };
 
@@ -63,10 +57,7 @@ describe('Quad Tree', () => {
     qt.add(-2, 4, null);
 
     const expectedReturn = {
-      coordinates: {
-        x: 1,
-        y: 4,
-      },
+      coordinates: [1, 4],
       item: 'item2',
     };
 
@@ -83,10 +74,7 @@ describe('Quad Tree', () => {
     qt.add(-2, 4, null);
 
     const expectedReturn = {
-      coordinates: {
-        x: -3,
-        y: 1,
-      },
+      coordinates: [-3, 1],
       item: 'item3',
     };
 
@@ -103,17 +91,11 @@ describe('Quad Tree', () => {
     qt.add(-2, 4, null);
 
     const firstExpectedReturn = {
-      coordinates: {
-        x: 1,
-        y: 4,
-      },
+      coordinates: [1, 4],
       item: 'item2',
     };
     const secondExpectedReturn = {
-      coordinates: {
-        x: -3,
-        y: 1,
-      },
+      coordinates: [-3, 1],
       item: 'item3',
     };
 
