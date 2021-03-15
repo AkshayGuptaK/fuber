@@ -10,3 +10,6 @@ parserOptions:
   project: ./tsconfig.json
 plugins:
   - '@typescript-eslint'
+  - 'eslint-plugin-tsdoc'
+rules:
+  tsdoc/syntax: warn
