@@ -1,5 +1,5 @@
 import autoBind from 'auto-bind';
-import { Car, Coordinate, Trip } from './types';
+import { Car, carTypeCosts, Coordinate, Trip } from './types';
 import { distanceBetween } from './utils';
 
 const chargePerDegree = 1000;
@@ -33,7 +33,8 @@ export default class TripLog {
     const tripTime = trip.timeCompleted - trip.timeBegun;
     const tripDistance = distanceBetween(trip.origination, trip.destination);
     const charge = Math.floor(
-      tripTime * chargePerMs + tripDistance * chargePerDegree // need to charge on car type basis
+      tripTime * chargePerMs +
+        tripDistance * chargePerDegree * carTypeCosts[trip.taxi.type]
     );
     return { charge, destination: trip.destination, taxi: trip.taxi };
   }

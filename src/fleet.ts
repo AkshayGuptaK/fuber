@@ -1,6 +1,12 @@
 import autoBind from 'auto-bind';
 import QuadTree from './quadtree';
-import { GeoCoordinate, Preferences, Car, carTypes, Coordinate } from './types';
+import {
+  GeoCoordinate,
+  Preferences,
+  Car,
+  carTypeCosts,
+  Coordinate,
+} from './types';
 
 export default class Fleet {
   cars: QuadTree<Car>;
@@ -43,6 +49,9 @@ export default class Fleet {
     for (let i = 0; i < numberOfCars; i++) {
       const latitude = Math.random() * 180 - 90;
       const longitude = Math.random() * 360 - 180;
+      const carTypes = Object.keys(carTypeCosts) as Array<
+        keyof typeof carTypeCosts
+      >;
       const type = carTypes[Math.floor(Math.random() * carTypes.length)];
       this.cars.add(latitude, longitude, {
         type: type,

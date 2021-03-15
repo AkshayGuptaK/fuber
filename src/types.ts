@@ -10,10 +10,14 @@ export type Preferences<T extends string = string> = Record<
   string | number | boolean
 >;
 
-export const carTypes = ['auto', 'sedan', 'limo'] as const;
+export const carTypeCosts = {
+  auto: 1,
+  sedan: 2,
+  limo: 3,
+} as const;
 
 export interface Car {
-  readonly type: typeof carTypes[number];
+  readonly type: keyof typeof carTypeCosts;
   licensePlate: string;
 }
 
