@@ -9,6 +9,12 @@ export default class SortedArray<T> {
     autoBind(this);
   }
 
+  /**
+   * Inserts an item into the sorted array
+   * @param itemX - horizontal coordinate of item to be inserted
+   * @param itemY - vertical coordinate of item to be inserted
+   * @param item - item to be inserted
+   */
   add(itemX: number, itemY: number, item: T): void {
     this.items.push({
       coordinates: [itemX, itemY],
@@ -16,6 +22,13 @@ export default class SortedArray<T> {
     });
   }
 
+  /**
+   * Remove and return the nearest item in the array that meets the filter criteria
+   * @param targetX - horizontal coordinate to search near
+   * @param targetY - vertical coordinate to search neer
+   * @param filter - a function that takes an item and returns true if it meets the criteria
+   * @returns closest matching item and its coordinates
+   */
   removeNearest(
     targetX: number,
     targetY: number,

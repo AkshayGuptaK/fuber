@@ -16,6 +16,10 @@ export const carTypeCosts = {
   limo: 3,
 } as const;
 
+export const carTypes = Object.keys(carTypeCosts) as Array<
+  keyof typeof carTypeCosts
+>;
+
 export interface Car {
   readonly type: keyof typeof carTypeCosts;
   licensePlate: string;

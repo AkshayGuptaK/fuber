@@ -18,8 +18,35 @@ export default class QuadTree<T> {
     this.root = null;
   }
 
+  /**
+   * Inserts an item into the quadtree
+   * @param itemX - horizontal coordinate of item to be inserted
+   * @param itemY - vertical coordinate of item to be inserted
+   * @param item - item to be inserted
+   */
   add(itemX: number, itemY: number, item: T): void {
     this.root = this.addToSubtree(itemX, itemY, item, new Bound(), this.root);
+  }
+
+  /**
+   * Remove and return the nearest item in the tree that meets the filter criteria
+   * @param targetX - horizontal coordinate to search near
+   * @param targetY - vertical coordinate to search neer
+   * @param filter - a function that takes an item and returns true if it meets the criteria
+   * @returns closest matching item and its coordinates
+   */
+  removeNearest(
+    targetX: number,
+    targetY: number,
+    filter: (item: T | null) => boolean
+  ): { coordinates: Coordinate; item: T | null } | null {
+    let best: Best<T> = { distance: Number.POSITIVE_INFINITY, node: null };
+    best = this.findNearestInSubtree(targetX, targetY, filter, best, this.root);
+    if (best.node == null) return null;
+    const item = best.node.getItem();
+    const coordinates = best.node.getCoordinates();
+    this.removeNode(best.node);
+    return { coordinates, item };
   }
 
   private addToSubtree(
@@ -39,20 +66,6 @@ export default class QuadTree<T> {
       node[direction]
     );
     return node;
-  }
-
-  removeNearest(
-    targetX: number,
-    targetY: number,
-    filter: (item: T | null) => boolean
-  ): { coordinates: Coordinate; item: T | null } | null {
-    let best: Best<T> = { distance: Number.POSITIVE_INFINITY, node: null };
-    best = this.findNearestInSubtree(targetX, targetY, filter, best, this.root);
-    if (best.node == null) return null;
-    const item = best.node.getItem();
-    const coordinates = best.node.getCoordinates();
-    this.removeNode(best.node);
-    return { coordinates, item };
   }
 
   private removeNode(node: Node<T>): void {

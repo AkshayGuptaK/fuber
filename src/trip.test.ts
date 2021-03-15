@@ -1,5 +1,5 @@
 import TripLog from './trip';
-import { Car, carTypeCosts, Coordinate } from './types';
+import { Car, carTypes, Coordinate } from './types';
 
 describe('Trip Log', () => {
   it('should return null when trying to complete nonexistent trip', () => {
@@ -12,7 +12,7 @@ describe('Trip Log', () => {
     const origination: Coordinate = [12.972442, 77.580643];
     const originalDestination: Coordinate = [37.871666, -122.272781];
     const originalTaxi = {
-      type: Object.keys(carTypeCosts)[1],
+      type: carTypes[1],
       licensePlate: 'LUV2XLR8',
     } as Car;
     tl.add(origination, originalDestination, originalTaxi);
@@ -26,7 +26,7 @@ describe('Trip Log', () => {
     const originalDestination: Coordinate = [37.871666, -122.272781];
 
     const originalTaxi = {
-      type: Object.keys(carTypeCosts)[1],
+      type: carTypes[1],
       licensePlate: 'LUV2XLR8',
     } as Car;
     tl.add(origination, originalDestination, originalTaxi);
@@ -41,7 +41,7 @@ describe('Trip Log', () => {
     const originalDestination: Coordinate = [37.871666, -122.272781];
 
     const originalTaxi = {
-      type: Object.keys(carTypeCosts)[1],
+      type: carTypes[1],
       licensePlate: 'LUV2XLR8',
     } as Car;
     tl.add(origination, originalDestination, originalTaxi);
@@ -55,7 +55,7 @@ describe('Trip Log', () => {
     const originalDestination: Coordinate = [37.871666, -122.272781];
 
     const originalTaxi = {
-      type: Object.keys(carTypeCosts)[2],
+      type: carTypes[2],
       licensePlate: 'LUV2XLR8',
     } as Car;
     tl.add(origination, originalDestination, originalTaxi);

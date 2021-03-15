@@ -1,12 +1,6 @@
 import autoBind from 'auto-bind';
 import QuadTree from './quadtree';
-import {
-  GeoCoordinate,
-  Preferences,
-  Car,
-  carTypeCosts,
-  Coordinate,
-} from './types';
+import { GeoCoordinate, Preferences, Car, Coordinate, carTypes } from './types';
 
 export default class Fleet {
   cars: QuadTree<Car>;
@@ -17,10 +11,16 @@ export default class Fleet {
     this.loadInitialCars(size);
   }
 
+  /**
+   @param location - pick location with latitude and longitude
+   @param preferences - what type of taxi is desired or specific license plate 
+   @see carTypes for available taxi types
+   @returns if taxi is found its details and where it currently is
+   */
   findNearestTaxi(
     location: GeoCoordinate,
     preferences: Preferences<keyof Car>
-  ): { taxiLocation: GeoCoordinate; taxi: Car | null } | null {
+  ): { taxi: Car; taxiLocation: GeoCoordinate } | null {
     const { latitude, longitude } = location;
     const filterFn = (car: Car | null): boolean => {
       if (car == null) return false;
@@ -37,7 +37,7 @@ export default class Fleet {
         latitude: coordinates[0],
         longitude: coordinates[1],
       },
-      taxi: item,
+      taxi: item!, // not null guaranteed by filterFn rejecting null cars
     };
   }
 
@@ -49,9 +49,6 @@ export default class Fleet {
     for (let i = 0; i < numberOfCars; i++) {
       const latitude = Math.random() * 180 - 90;
       const longitude = Math.random() * 360 - 180;
-      const carTypes = Object.keys(carTypeCosts) as Array<
-        keyof typeof carTypeCosts
-      >;
       const type = carTypes[Math.floor(Math.random() * carTypes.length)];
       this.cars.add(latitude, longitude, {
         type: type,
