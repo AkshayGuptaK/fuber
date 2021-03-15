@@ -9,7 +9,12 @@ interface Best<T> {
   distance: number;
   node: Node<T> | null;
 }
-
+/**
+ * Quadtree data structure with filtered search
+ * @remarks A four degree tree, where each child is one of four directions (NW, SW, NE, SE) from its parent.
+ * Can insert items and return the nearest item to a given location that matches some filter criteria in O(log N) time.
+ * @typeparam T - the type of items the tree contains
+ */
 export default class QuadTree<T> {
   private root: Node<T> | null;
 
@@ -31,7 +36,7 @@ export default class QuadTree<T> {
   /**
    * Remove and return the nearest item in the tree that meets the filter criteria
    * @param targetX - horizontal coordinate to search near
-   * @param targetY - vertical coordinate to search neer
+   * @param targetY - vertical coordinate to search near
    * @param filter - a function that takes an item and returns true if it meets the criteria
    * @returns closest matching item and its coordinates
    */
