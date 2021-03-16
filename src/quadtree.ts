@@ -54,6 +54,15 @@ export default class QuadTree<T> {
     return { coordinates, item };
   }
 
+  /**
+   * Inserts an item into the subtree rooted at a given node
+   * @param itemX - horizontal coordinate of item to be inserted
+   * @param itemY - vertical coordinate of item to be inserted
+   * @param item - item to be inserted
+   * @param bound - tbd
+   * @param node - the root node of the subtree
+   * @returns the root node of the modified subtree after insertion
+   */
   private addToSubtree(
     itemX: number,
     itemY: number,
@@ -78,6 +87,15 @@ export default class QuadTree<T> {
     // check if leaf, if so remove node, recurse up the tree checking parents for the same
   }
 
+  /**
+   * Finds the nearest item in the subtree rooted at a given node matching the filter
+   * @param targetX - horizontal coordinate to search near
+   * @param targetY - vertical coordinate to search near
+   * @param filter - function that takes an item and returns true if it meets the criteria
+   * @param best - the closest matching node found so far and its distance from the target
+   * @param node - the root node of the subtree
+   * @returns the closest matching node and its distance from the target coordinates
+   */
   private findNearestInSubtree(
     targetX: number,
     targetY: number,
@@ -101,15 +119,25 @@ export default class QuadTree<T> {
     return best;
   }
 
+  /**
+   * Finds the nearest item in all other branches of the subtree except the one specified rooted at a given node matching the filter
+   * @param targetX - horizontal coordinate to search near
+   * @param targetY - vertical coordinate to search near
+   * @param filter - function that takes an item and returns true if it meets the criteria
+   * @param best - the closest matching node found so far and its distance from the target
+   * @param node - the root node of the subtree
+   * @param searchedDirection - the direction from the node to avoid searching as it's already searched
+   * @returns the closest matching node and its distance from the target coordinates
+   */
   private findNearestInRestOfTree(
     targetX: number,
     targetY: number,
     filter: (item: T | null) => boolean,
     best: Best<T>,
     node: Node<T>,
-    goodDirection: Direction
-  ) {
-    const otherDirections = directions.filter((d) => d !== goodDirection);
+    searchedDirection: Direction
+  ): Best<T> {
+    const otherDirections = directions.filter((d) => d !== searchedDirection);
     for (const direction of otherDirections) {
       if (
         best.distance >
@@ -127,6 +155,15 @@ export default class QuadTree<T> {
     return best;
   }
 
+  /**
+   * Returns the new closest node and distance after considering a candidate node
+   * @param targetX - horizontal coordinate to search near
+   * @param targetY - vertical coordinate to search near
+   * @param filter - function that takes an item and returns true if it meets the criteria
+   * @param best - the closest matching node found so far and its distance from the target
+   * @param node - candidate node for new closest
+   * @returns the updated closest matching node and its distance from the target coordinates
+   */
   private updateBestForNode(
     targetX: number,
     targetY: number,
